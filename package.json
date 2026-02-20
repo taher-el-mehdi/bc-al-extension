@@ -1,0 +1,51 @@
+{
+  "name": "al-extension",
+  "displayName": "AL Extension",
+  "description": "Toolkit for AL Business Central developers.",
+  "version": "1.0.0",
+  "publisher": "TAHERElMehdi",
+  "icon": "assets/logo.ico",
+  "homepage": "https://github.com/taher-el-mehdi/bc-al-extension",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taher-el-mehdi/bc-al-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/taher-el-mehdi/bc-al-extension/issues"
+  },
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "keywords": [
+    "Dynamics 365",
+    "Business Central",
+    "AL"
+  ],
+  "activationEvents": [
+    "onCommand:emt.fixAlNamesExtendedObjects"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "emt.fixAlNamesExtendedObjects",
+        "title": "EMT: Fix AL Names Extended Objects"
+      }
+    ]
+  },
+  "extensionDependencies": [
+    "ms-dynamics-smb.al"
+  ],
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.84.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.6.3",
+    "vsce": "^2.15.0"
+  }
+}
