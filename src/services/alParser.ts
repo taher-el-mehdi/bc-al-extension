@@ -15,6 +15,12 @@ export interface ExtensionHeaderInfo {
 const extensionHeaderRegex = /^\s*(pageextension|tableextension|reportextension|enumextension|permissionsetextension)\s*(\d+)\s*(?:"([^"]*)"|([A-Za-z0-9_]+))?\s*extends\s+(?:"([^"]*)"|([A-Za-z0-9_\/]+))\s*$/i;
 
 export function parseExtensionHeader(document: vscode.TextDocument): ExtensionHeaderInfo | null {
+  const headers = parseExtensionHeaders(document);
+  return headers[0] ?? null;
+}
+
+export function parseExtensionHeaders(document: vscode.TextDocument): ExtensionHeaderInfo[] {
+  const headers: ExtensionHeaderInfo[] = [];
   const lineCount = document.lineCount;
   for (let i = 0; i < lineCount; i += 1) {
     const lineText = document.lineAt(i).text;
@@ -29,7 +35,7 @@ export function parseExtensionHeader(document: vscode.TextDocument): ExtensionHe
 
     const match = extensionHeaderRegex.exec(lineText);
     if (!match) {
-      return null;
+      continue;
     }
 
     const objectType = match[1];
@@ -39,7 +45,7 @@ export function parseExtensionHeader(document: vscode.TextDocument): ExtensionHe
     const desiredName = buildExtensionName(extendsName);
     const desiredLine = `${objectType} ${objectId} "${desiredName}" extends "${extendsName}"`;
 
-    return {
+    headers.push({
       objectType,
       objectId,
       currentName,
@@ -48,8 +54,8 @@ export function parseExtensionHeader(document: vscode.TextDocument): ExtensionHe
       rawLine: lineText,
       desiredName,
       desiredLine,
-    };
+    });
   }
 
-  return null;
+  return headers;
 }

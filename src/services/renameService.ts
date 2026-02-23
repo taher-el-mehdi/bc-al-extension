@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { parseExtensionHeader, ExtensionHeaderInfo } from "./alParser";
+import { parseExtensionHeaders, ExtensionHeaderInfo } from "./alParser";
 
 export interface ProposedChange {
   uri: vscode.Uri;
@@ -14,24 +14,26 @@ export async function collectProposedChanges(uris: vscode.Uri[]): Promise<Propos
 
   for (const uri of uris) {
     const document = await vscode.workspace.openTextDocument(uri);
-    const headerInfo = parseExtensionHeader(document);
-    if (!headerInfo) {
+    const headers = parseExtensionHeaders(document);
+    if (headers.length === 0) {
       continue;
     }
 
-    if (headerInfo.rawLine.trim() === headerInfo.desiredLine.trim()) {
-      continue;
+    for (const headerInfo of headers) {
+      if (headerInfo.rawLine.trim() === headerInfo.desiredLine.trim()) {
+        continue;
+      }
+
+      const lineRange = document.lineAt(headerInfo.lineIndex).range;
+
+      changes.push({
+        uri,
+        range: lineRange,
+        oldLine: headerInfo.rawLine,
+        newLine: headerInfo.desiredLine,
+        header: headerInfo,
+      });
     }
-
-    const lineRange = document.lineAt(headerInfo.lineIndex).range;
-
-    changes.push({
-      uri,
-      range: lineRange,
-      oldLine: headerInfo.rawLine,
-      newLine: headerInfo.desiredLine,
-      header: headerInfo,
-    });
   }
 
   return changes;
