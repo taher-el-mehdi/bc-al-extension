@@ -2,7 +2,7 @@
   "name": "al-extension",
   "displayName": "AL Extension",
   "description": "Toolkit for AL Business Central developers.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "TAHERElMehdi",
   "icon": "assets/logo.ico",
   "homepage": "https://github.com/taher-el-mehdi/bc-al-extension",
