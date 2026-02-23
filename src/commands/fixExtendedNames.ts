@@ -71,7 +71,7 @@ export async function runFixExtendedNamesCommand(): Promise<void> {
     {
       location: vscode.ProgressLocation.Notification,
       title: "EMT: Fix AL Names Extended Objects",
-      cancellable: false,
+      cancellable: true,
     },
     async (progress) => {
       progress.report({ message: "Applying changes..." });
